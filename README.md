@@ -2,7 +2,7 @@
 
 A small Obsidian plugin for embedding structured YAML metadata blocks directly into notes with customizable rendering
 
-![Demo](assets/demo.gif)
+![Demo](docs/demo.gif)
 
 ## Why?
 
