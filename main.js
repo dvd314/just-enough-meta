@@ -20,10 +20,10 @@ module.exports = class InlineMetadataPlugin extends Plugin {
     this.addSettingTab(new MySettingTab(this.app, this));
     await this.loadSettings();
 
+    // register codeblock processor
     this.registerMarkdownCodeBlockProcessor(
       this.settings.metadataPrefix,
       async (source, el, ctx,) => {
-        console.log(ctx);
         await processBlock(source, el, ctx, this.settings);
       }
     );

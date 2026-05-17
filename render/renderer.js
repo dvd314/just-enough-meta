@@ -1,6 +1,16 @@
 const { renderContent } = require("./content");
 const { renderMeta } = require("./meta");
 
+
+// getting metadata block config part
+function splitMeta(meta) {
+    const { _config, ...data } = meta;
+    return {
+        data,
+        config: _config || {}
+    };
+}
+// configation of metadata block
 function filterMeta(meta, display) {
     if (!display) return meta;
 
@@ -20,14 +30,7 @@ function filterMeta(meta, display) {
     return Object.fromEntries(entries);
 }
 
-function splitMeta(meta) {
-    const { _config, ...data } = meta;
-    return {
-        data,
-        config: _config || {}
-    };
-}
-
+// main block render
 async function renderBlock(container, meta, content, ctx, raw, settings) {
     container.empty();
 
@@ -57,6 +60,7 @@ async function renderBlock(container, meta, content, ctx, raw, settings) {
     }
 }
 
+// in case of errors while parsing
 function renderError(container, error, raw) {
     const block = container.createDiv({ cls: "im-block im-error" });
 

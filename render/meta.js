@@ -1,7 +1,11 @@
+// this code is just a mess...
+
 const popoverStack = [];
 
 const openedSimbol = "⯆";
 const closedSimbol = "⯈";
+
+let ticking = false;
 
 function closePopover(p) {
     p.el.classList.remove("is-open");
@@ -64,14 +68,16 @@ function openPopover(anchor, level, toggle, render) {
     return pop.el;
 }
 
-// render
+// RENDER
 
+// creating metadata block element
 function renderMeta(container, meta, settings) {
     const metaEl = container.createSpan({ cls: "im-meta" });
     console.log(meta);
     renderValues(metaEl, meta, 0, settings);
 }
 
+// creating first level of depth just inside of metadata block element
 function renderValues(metaEl, meta, level, settings) {
     Object.entries(meta).forEach(([k, v]) => {
         const wrapper = metaEl.createDiv({ cls: "im-meta-item-wrapper" });
@@ -80,6 +86,7 @@ function renderValues(metaEl, meta, level, settings) {
     });
 }
 
+// render value of item, creating nesting
 function renderValue(container, value, key, settings = null, level = 0) {
     const item = container.createDiv({ cls: "im-meta-item" });
     item.addClass(`im-type-${typeof value}`);
@@ -135,7 +142,7 @@ function renderValue(container, value, key, settings = null, level = 0) {
         return item;
     }
 
-    // object
+    // other objects
 
     if (value?.constructor === Object) {
         valueEl.setText(closedSimbol);
@@ -225,14 +232,7 @@ function positionPopover(anchor, popover) {
     popover.style.top = `${y}px`;
 }
 
-function updateAllPopovers() {
-    popoverStack.forEach(p => {
-        positionPopover(p.anchor, p.el);
-    });
-}
-
 // global close
-
 window.addEventListener("click", (e) => {
     const clickedInsidePopover = popoverStack.some(p =>
         p.el.contains(e.target)
@@ -245,10 +245,7 @@ window.addEventListener("click", (e) => {
     }
 });
 
-window.addEventListener("resize", updateAllPopovers);
-
-let ticking = false;
-
+// updating on sctoll
 window.addEventListener("scroll", () => {
     if (!ticking) {
         requestAnimationFrame(() => {
@@ -259,7 +256,14 @@ window.addEventListener("scroll", () => {
     }
 });
 
-let tracking = false;
+// updating on resize
+function updateAllPopovers() {
+    popoverStack.forEach(p => {
+        positionPopover(p.anchor, p.el);
+    });
+}
+
+window.addEventListener("resize", updateAllPopovers);
 
 function startTracking() {
     if (tracking) return;
@@ -295,6 +299,7 @@ function startTracking() {
     requestAnimationFrame(loop);
 }
 
+// for managable scrolling speed inside popups
 function slowScroll(el, factor = 0.3) {
     let target = el.scrollTop;
 
