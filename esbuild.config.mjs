@@ -3,7 +3,7 @@ import esbuild from "esbuild";
 esbuild.build({
   entryPoints: ["main.js"],
   bundle: true,
-  outfile: "C:/DVDs Vault/.obsidian/plugins/just-enough-meta/main.js",
+  outfile: "dist/main.js",
   format: "cjs",
   target: "es2018",
   platform: "browser",
